@@ -19,6 +19,7 @@ public class Repeat extends DNA {
   public String endonucleaseRNACleave() throws UnsupportedOperationException {
     // only a small portion of the repeats are transcribed as a part of the mature crRNA
     // in our case I made it so it just transcribes the last four nucleotides of the repeats
+    // biologically I am not certain how this process actually works out
     StringBuilder result = new StringBuilder();
     for (int i = this.tempStrand.length() - 4; i < this.tempStrand.length(); i++) {
       result.append(DNA.BASE_PAIRS.get(this.tempStrand.charAt(i)));

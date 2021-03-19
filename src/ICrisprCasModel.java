@@ -34,7 +34,7 @@ public interface ICrisprCasModel {
    * Extracts and incorporates a portion of the given viral DNA into the model's CRISPR array.
    *
    * @param virus The foreign viral DNA
-   * @throws NullPointerException If the provided DNA is null
+   * @throws NullPointerException     If the provided DNA is null
    * @throws IllegalArgumentException If the user tries to add the same virus twice
    */
   void adaptation(DNA virus) throws NullPointerException, IllegalArgumentException;
@@ -51,10 +51,12 @@ public interface ICrisprCasModel {
    * Checks if the given viral DNA matches any of the crRNAs. If it does, then it will get
    * "degraded" by the CRISPR model.
    *
-   * @param virus The foreign viral DNA
+   * @param crRNAList The list of mature crRNAs
+   * @param virus     The foreign viral DNA
    * @return If the viral DNA is degraded or not (if it matches any of the crRNAs)
+   * @throws NullPointerException If either the list of {@code String}s or the viral DNA is null
    */
-  boolean interference(String virus);
+  boolean interference(List<String> crRNAList, DNA virus) throws NullPointerException;
 
 
   /**
@@ -67,6 +69,7 @@ public interface ICrisprCasModel {
 
   /**
    * Produces a copy of the CRISPR array in the model.
+   *
    * @return A copy of the CRISPR array in the model
    */
   List<DNA> getCRISPRArray();

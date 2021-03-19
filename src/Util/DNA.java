@@ -31,13 +31,22 @@ public abstract class DNA {
    */
   public DNA(String parentStrand, String tempStrand) throws IllegalArgumentException {
     if (parentStrand.equals("") || tempStrand.equals("")) {
-      throw new IllegalArgumentException("The provided sequence(s) cannot be empty!");
+      throw new IllegalArgumentException("The provided sequence(s) cannot be empty");
     } else if (!this.isComplementary(parentStrand, tempStrand)) {
-      throw new IllegalArgumentException("The provided sequences must be complementary!");
+      throw new IllegalArgumentException("The provided sequences must be complementary");
     }
     this.parentStrand = parentStrand;
     this.tempStrand = tempStrand;
   }
+
+  /**
+   * Represents the action of a Cas endonuclease recognizing secondary hairpin structures formed by
+   * the repeats and cleaves it, which produces a sticky end for the start of a mature crRNA.
+   *
+   * @return a shortened section from a {@code String} palindromic repeat
+   * @throws UnsupportedOperationException If a Spacer class ever calls this method
+   */
+  public abstract String endonucleaseRNACleave() throws UnsupportedOperationException;
 
   /**
    * Takes the template strand and synthesizes an RNA strand from it in the 5' to 3' direction.
@@ -53,13 +62,22 @@ public abstract class DNA {
   }
 
   /**
-   * Represents the action of a Cas endonuclease recognizing secondary hairpin structures formed by
-   * the repeats and cleaves it, which produces a sticky end for the start of a mature crRNA.
+   * Returns the parent DNA sequence
    *
-   * @return a shortened section from a {@code String} palindromic repeat
-   * @throws UnsupportedOperationException If a Spacer class ever calls this method
+   * @return The parent DNA sequence
    */
-  public abstract String endonucleaseRNACleave() throws UnsupportedOperationException;
+  public String getParentStrand() {
+    return this.parentStrand;
+  }
+
+  /**
+   * Returns the template DNA sequence
+   *
+   * @return The template DNA sequence
+   */
+  public String getTempStrand() {
+    return this.tempStrand;
+  }
 
   /**
    * Determines if the provided parent strand and template strand are indeed complementary.

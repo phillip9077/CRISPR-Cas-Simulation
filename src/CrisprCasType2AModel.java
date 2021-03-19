@@ -42,25 +42,34 @@ public class CrisprCasType2AModel implements ICrisprCasModel {
     }
     this.crisprArr.add(virus);
     this.crisprArr.add(this.repeat);
-}
+  }
 
   @Override
   public List<String> biogenesis() {
     List<String> result = new ArrayList<>();
-    for (int i = 0; i < this.crisprArr.size()-1; i+=2) {
+    for (int i = 0; i < this.crisprArr.size() - 1; i += 2) {
       String crRNA = "";
       // first DNA is a repeat for sure so we only want a small section from it
       crRNA += this.crisprArr.get(i).endonucleaseRNACleave();
       // the other two we can just call DNA2RNA since we want the full RNA sequence for both
-      crRNA += this.crisprArr.get(i+1).DNA2RNA();
-      crRNA += this.crisprArr.get(i+2).DNA2RNA();
+      crRNA += this.crisprArr.get(i + 1).DNA2RNA();
+      crRNA += this.crisprArr.get(i + 2).DNA2RNA();
       result.add(crRNA);
     }
     return result;
   }
 
   @Override
-  public boolean interference(String virus) {
+  public boolean interference(List<String> crRNAList, DNA virus) throws NullPointerException {
+    if (crRNAList == null || virus == null) {
+      throw new NullPointerException("The list or DNA cannot be null");
+    }
+    String sequence = virus.getParentStrand();
+    for (int i = 0; i < crRNAList.size(); i++) {
+      if (crRNAList.get(i).contains(sequence)) {
+        return true;
+      }
+    }
     return false;
   }
 
