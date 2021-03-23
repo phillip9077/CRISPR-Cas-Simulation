@@ -1,10 +1,12 @@
+package Model;
+
 import Util.DNA;
 import Util.Repeat;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A representation of an ICrisprCasModel. Technically, there are different kinds of CRISPR-Cas
+ * A representation of an Model.ICrisprCasModel. Technically, there are different kinds of CRISPR-Cas
  * systems, but for simplicity's sake it is generalized to the most studied one: CRISPR-Cas Type
  * II-A. Genetically, in CRISPR loci the repeats are practically identical in length and sequence.
  * The spacers seem to have the identical length, but sequence content varies.
@@ -40,6 +42,7 @@ public class CrisprCasType2AModel implements ICrisprCasModel {
     } else if (this.crisprArrayContains(virus)) {
       throw new IllegalArgumentException("Virus already exists in CRISPR array");
     }
+    // very roughly mimics the action of the Cas1-Cas2 complex
     this.crisprArr.add(virus);
     this.crisprArr.add(this.repeat);
   }
@@ -64,6 +67,7 @@ public class CrisprCasType2AModel implements ICrisprCasModel {
     if (crRNAList == null || virus == null) {
       throw new NullPointerException("The list or DNA cannot be null");
     }
+    // TODO: ADD EXCEPTION TO HANDLE IF THE GIVEN VIRUS DOESN'T EXIST IN crRNAList
     String sequence = virus.getParentStrand();
     for (int i = 0; i < crRNAList.size(); i++) {
       if (crRNAList.get(i).contains(sequence)) {

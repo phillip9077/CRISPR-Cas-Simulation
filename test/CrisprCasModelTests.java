@@ -1,6 +1,8 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import Model.CrisprCasType2AModel;
+import Model.ICrisprCasModel;
 import Util.DNA;
 import Util.Spacer;
 import java.util.List;

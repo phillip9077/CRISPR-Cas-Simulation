@@ -1,3 +1,4 @@
+package Model;
 /*
   Desired functions:
     - Adaptation --> Given an invading genetic material (a String?) a portion of it is inserted into
@@ -8,9 +9,9 @@
                        complementary base-pairing and the target DNA is degraded
 
    Desired interfaces/classes:
-     - ICrisprCasModel
+     - Model.ICrisprCasModel
      - CrisprCasModel
-     - ICrisprCasView
+     - View.ICrisprCasView
      - CrisprCasView
      - Controller?
      - DNA
