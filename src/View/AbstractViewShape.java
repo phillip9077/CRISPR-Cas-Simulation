@@ -9,28 +9,32 @@ import java.awt.Graphics2D;
  */
 public abstract class AbstractViewShape implements IViewShape {
 
-  protected int x;
-  protected int y;
+  protected int[] x;
+  protected int[] y;
   protected int vx;
   protected int vy;
-  protected final int w;
-  protected final int h;
-  protected final Color color;
+  protected int w;
+  protected int h;
+  protected Color color;
   protected int xLimit;
   protected int yLimit;
 
   /**
    * The default constructor for an AbstractViewShape.
    *
-   * @param x     The x coordinate
-   * @param y     The y coordinate
+   * @param x     The array of x coordinate(s)
+   * @param y     The array of y coordinate(s)
    * @param vx    The x velocity
    * @param vy    The y velocity
    * @param w     The width
    * @param h     The height
    * @param color The color
    */
-  protected AbstractViewShape(int x, int y, int vx, int vy, int w, int h, Color color) {
+  protected AbstractViewShape(int[] x, int[] y, int vx, int vy, int w, int h, Color color)
+      throws NullPointerException {
+    if (x == null || y == null) {
+      throw new NullPointerException("The array(s) cannot be null");
+    }
     this.x = x;
     this.y = y;
     this.vx = vx;

@@ -1,11 +1,16 @@
 package View;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.TimerTask;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
 
@@ -36,6 +41,9 @@ public class CrisprCasType2ASwingView extends JFrame implements ICrisprCasView {
 
   private final CanvasPanel canvas;
   private Timer timer;
+  private JButton adaptButton;
+  private JButton genButton;
+  private JButton interButton;
   private boolean isDrawAdaptation;
   private boolean isDrawBiogenesis;
   private boolean isDrawInterference;
@@ -43,17 +51,22 @@ public class CrisprCasType2ASwingView extends JFrame implements ICrisprCasView {
   public CrisprCasType2ASwingView() {
     super();
 
-    setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    this.setSize(new Dimension(500, 500));
-
-    this.canvas = new CanvasPanel(500, 500);
-    this.add(this.canvas);
-
-    setVisible(true);
-
     this.isDrawAdaptation = false;
     this.isDrawBiogenesis = false;
     this.isDrawInterference = false;
+
+    setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    this.setSize(new Dimension(500, 585));
+
+    JPanel container = new JPanel();
+    this.setLayout(new BorderLayout());
+    this.canvas = new CanvasPanel(500, 500);
+    JPanel controlPanel = this.initControlPanel();
+    container.add(this.canvas);
+    container.add(controlPanel);
+    this.add(container, BorderLayout.CENTER);
+
+    setVisible(true);
   }
 
   @Override
@@ -74,8 +87,10 @@ public class CrisprCasType2ASwingView extends JFrame implements ICrisprCasView {
           drawAdaptation();
         } else if (isDrawBiogenesis) {
           // TODO: write out what it takes to visualize biogenesis
+          drawBiogenesis();
         } else if (isDrawInterference) {
           // TODO: write out what it takes to visualize interference
+          drawInterference();
         }
         canvas.repaint();
       }
@@ -84,29 +99,126 @@ public class CrisprCasType2ASwingView extends JFrame implements ICrisprCasView {
 
   @Override
   public void drawAdaptation() {
+    // resetting the canvas
+    this.canvas.clearShapes();
     // creating all the shapes needed
-    IViewShape cell = new ViewOval(180, -50, 0, 0, 500, 600, Color.LIGHT_GRAY);
-    IViewShape phage = new ViewRect(0, 230, 10, 0, 100, 50, Color.BLUE);
-    IViewShape virus = new ViewRect(0, 250, 10, 0, 100, 10, Color.RED);
+    IViewShape cell = new ViewOval(new int[]{180}, new int[]{-50}, 10, 0, 500, 600,
+        Color.LIGHT_GRAY);
+    IViewShape phage = new ViewRect(new int[]{0}, new int[]{230}, 10, 0, 100, 50, Color.BLUE);
+    IViewShape virus = new ViewRect(new int[]{0}, new int[]{250}, 10, 0, 100, 10, Color.RED);
+    IViewShape complex = new ViewPoly(
+        new int[]{340, 350, 380, 410, 420, 400, 420, 410, 380, 350, 340, 360},
+        new int[]{190, 180, 210, 180, 190, 220, 250, 260, 230, 260, 250, 220},
+        0, 0, 0, 0, Color.BLACK, 12);
+    IViewShape spacer = new ViewRect(new int[]{25}, new int[]{250}, 10, 0, 50, 10, Color.GREEN);
     // setting their X and Y limits if necessary
     phage.setXLimit(80);
     virus.setXLimit(330);
+    spacer.setXLimit(355);
     // draw all the shapes needed
     this.canvas.drawShape(cell);
     this.canvas.drawShape(virus);
+    this.canvas.drawShape(spacer);
     this.canvas.drawShape(phage);
-    // reset the isDrawAnimation value to be false so the timer doesn't constantly create new shapes
+    this.canvas.drawShape(complex);
+    // TODO: setting delay for certain animations if necessary
+    // reset the isDrawAdaptation value to be false so the timer doesn't constantly create new shapes
     this.isDrawAdaptation = false;
   }
 
   @Override
   public void drawBiogenesis() {
+    java.util.Timer utilTimer = new java.util.Timer();
+    // resetting the canvas
+    this.canvas.clearShapes();
+    // creating all shapes needed
+    IViewShape cell = new ViewOval(new int[]{0}, new int[]{-50}, 0, 0, 500, 600,
+        Color.LIGHT_GRAY);
+    IViewShape repeat1 = new ViewRect(new int[]{150}, new int[]{250}, 0, 0, 50, 10,
+        Color.BLUE);
+    IViewShape spacer1 = new ViewRect(new int[]{200}, new int[]{250}, 0, 10, 50, 10,
+        Color.GREEN);
+    IViewShape repeat2 = new ViewRect(new int[]{250}, new int[]{250}, 0, 10, 50, 10,
+        Color.BLUE);
+    IViewShape spacer2 = new ViewRect(new int[]{300}, new int[]{250}, 0, 10, 50, 10,
+        Color.RED);
+    IViewShape repeat3 = new ViewRect(new int[]{350}, new int[]{250}, 0, 10, 50, 10,
+        Color.BLUE);
+    // draw all the shapes needed
+    this.canvas.drawShape(cell);
+    this.canvas.drawShape(repeat1);
+    this.canvas.drawShape(spacer1);
+    this.canvas.drawShape(repeat2);
+    this.canvas.drawShape(spacer2);
+    this.canvas.drawShape(repeat3);
+    // setting delay for certain animations if necessary
+    utilTimer.schedule(new TimerTask() {
+      @Override
+      public void run() {
+        spacer1.setYLimit(150);
+        repeat2.setYLimit(150);
+        spacer2.setYLimit(380);
+        repeat3.setYLimit(380);
+        utilTimer.cancel();
+      }
+    }, 2000);
 
+    // reset the isDrawBiogenesis value to be false so the timer doesn't constantly create new shapes
+    this.isDrawBiogenesis = false;
   }
 
   @Override
   public void drawInterference() {
-
+    java.util.Timer utilTimer = new java.util.Timer();
+    // resetting the canvas
+    this.canvas.clearShapes();
+    // creating all shapes needed
+    IViewShape cell = new ViewOval(new int[]{-180}, new int[]{-50}, 10, 0, 500, 600,
+        Color.LIGHT_GRAY);
+    IViewShape phage = new ViewRect(new int[]{500}, new int[]{230}, 10, 0, 100, 50, Color.BLUE);
+    IViewShape virus1 = new ViewRect(new int[]{500}, new int[]{250}, 10, 10, 20, 10, Color.RED);
+    IViewShape virus2 = new ViewRect(new int[]{520}, new int[]{250}, 10, 15, 20, 10, Color.GREEN);
+    IViewShape virus3 = new ViewRect(new int[]{540}, new int[]{250}, 10, 10, 20, 10, Color.GREEN);
+    IViewShape virus4 = new ViewRect(new int[]{560}, new int[]{250}, 10, 20, 20, 10, Color.GREEN);
+    IViewShape virus5 = new ViewRect(new int[]{580}, new int[]{250}, 10, 5, 20, 10, Color.RED);
+    IViewShape repeat = new ViewRect(new int[]{170}, new int[]{240}, 0, 0, 40, 10,
+        Color.BLUE);
+    IViewShape spacer = new ViewRect(new int[]{200}, new int[]{240}, 0, 10, 60, 10,
+        Color.GREEN);
+    // setting X and Y limits if necessary
+    phage.setXLimit(320);
+    virus1.setXLimit(180);
+    virus2.setXLimit(200);
+    virus3.setXLimit(220);
+    virus4.setXLimit(240);
+    virus5.setXLimit(260);
+    // draw all the shapes needed
+    this.canvas.drawShape(cell);
+    this.canvas.drawShape(virus1);
+    this.canvas.drawShape(virus2);
+    this.canvas.drawShape(virus3);
+    this.canvas.drawShape(virus4);
+    this.canvas.drawShape(virus5);
+    this.canvas.drawShape(phage);
+    this.canvas.drawShape(repeat);
+    this.canvas.drawShape(spacer);
+    utilTimer.schedule(new TimerTask() {
+      @Override
+      public void run() {
+        virus1.setXLimit(600);
+        virus1.setYLimit(-100);
+        virus2.setXLimit(-100);
+        virus2.setYLimit(600);
+        virus3.setXLimit(600);
+        virus3.setYLimit(600);
+        virus4.setXLimit(600);
+        virus4.setYLimit(-100);
+        virus5.setXLimit(-100);
+        virus5.setYLimit(-100);
+      }
+    }, 5500);
+    // reset the isDrawInterference value to be false so the timer doesn't constantly create new shapes
+    this.isDrawInterference = false;
   }
 
   @Override
@@ -122,5 +234,26 @@ public class CrisprCasType2ASwingView extends JFrame implements ICrisprCasView {
   @Override
   public void setDrawInterference(boolean bool) {
     this.isDrawInterference = bool;
+  }
+
+  /**
+   * Formats a user-friendly control panel that the user should be able to use to manipulate the
+   * animation.
+   *
+   * @return A formatted {@code JPanel} with different {@code JComponent}s
+   */
+  private JPanel initControlPanel() {
+    JPanel controlPanel = new JPanel(new FlowLayout());
+    this.adaptButton = new JButton("Adaptation");
+    this.adaptButton.setActionCommand("adaptation");
+    this.genButton = new JButton("Biogenesis");
+    this.genButton.setActionCommand("biogenesis");
+    this.interButton = new JButton("Interference");
+    this.interButton.setActionCommand("interference");
+    controlPanel.add(this.adaptButton);
+    controlPanel.add(this.genButton);
+    controlPanel.add(this.interButton);
+
+    return controlPanel;
   }
 }

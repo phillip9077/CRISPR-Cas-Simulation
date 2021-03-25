@@ -43,4 +43,11 @@ public class CanvasPanel extends JPanel {
   public void drawShape(IViewShape shape) {
     shapes.add(shape);
   }
+
+  /**
+   * Clears {@code this.shapes} to allow for different animations to be drawn when necessary.
+   */
+  public void clearShapes() {
+    this.shapes.clear();
+  }
 }

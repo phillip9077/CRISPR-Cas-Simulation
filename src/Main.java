@@ -6,7 +6,9 @@ public class Main {
 
   public static void main(String[] args) throws IOException {
     ICrisprCasView view = new CrisprCasType2ASwingView();
-    view.setDrawAdaptation(true);
+    //view.setDrawAdaptation(true);
+    //view.setDrawBiogenesis(true);
+    view.setDrawInterference(true);
     view.render();
   }
 }
