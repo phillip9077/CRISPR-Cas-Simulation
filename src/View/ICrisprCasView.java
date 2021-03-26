@@ -1,5 +1,6 @@
 package View;
 
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 /**
@@ -55,5 +56,12 @@ public interface ICrisprCasView {
    * @param bool the {@code boolean} value to set to
    */
   void setDrawInterference(boolean bool);
+
+  /**
+   * Sets the various {@code JComponents} to an {@code ActionListener}.
+   *
+   * @param listener the {@code ActionListener} to set to
+   */
+  void setListener(ActionListener listener);
 
 }

@@ -11,8 +11,10 @@ import java.util.TimerTask;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
+import org.w3c.dom.Text;
 
 /**
  * Represents the Swing visualization of the CRISPR-Cas model with a timer to produce an actual
@@ -44,6 +46,7 @@ public class CrisprCasType2ASwingView extends JFrame implements ICrisprCasView {
   private JButton adaptButton;
   private JButton genButton;
   private JButton interButton;
+  private JTextArea textArea;
   private boolean isDrawAdaptation;
   private boolean isDrawBiogenesis;
   private boolean isDrawInterference;
@@ -56,16 +59,28 @@ public class CrisprCasType2ASwingView extends JFrame implements ICrisprCasView {
     this.isDrawInterference = false;
 
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    this.setSize(new Dimension(500, 585));
+    this.setSize(new Dimension(500, 750));
+    this.setLayout(new BorderLayout());
 
     JPanel container = new JPanel();
-    this.setLayout(new BorderLayout());
     this.canvas = new CanvasPanel(500, 500);
-    JPanel controlPanel = this.initControlPanel();
     container.add(this.canvas);
-    container.add(controlPanel);
-    this.add(container, BorderLayout.CENTER);
 
+    JPanel controlPanel = this.initControlPanel();
+    container.add(controlPanel);
+
+    JPanel textBox = new JPanel();
+    this.textArea = new JTextArea();
+    this.textArea.setText("Click on the Adaptation button to start the animation!");
+    this.textArea.setEditable(false);
+    this.textArea.setLineWrap(true);
+    this.textArea.setBounds(50, 50, 290, 300);
+    this.textArea.setWrapStyleWord(true);
+    this.textArea.setBackground(Color.WHITE);
+    textBox.add(this.textArea);
+    container.add(textBox);
+
+    this.add(container, BorderLayout.CENTER);
     setVisible(true);
   }
 
@@ -121,7 +136,12 @@ public class CrisprCasType2ASwingView extends JFrame implements ICrisprCasView {
     this.canvas.drawShape(spacer);
     this.canvas.drawShape(phage);
     this.canvas.drawShape(complex);
-    // TODO: setting delay for certain animations if necessary
+    // setting a text description for adaptation
+    this.textArea.setText("The blue rectangle is the bacteriophage, the organism that injects viral "
+        + "DNA into the bacteria. As the viral DNA (the red + green strand) enters the bacteria,"
+        + "the orange polygon called the Cas1-Cas2 complex will be able to extract a portion of the"
+        + "viral DNA (the green strand). This portion is then inserted into the CRISPR array ("
+        + "not shown on screen), which consists of the first stage to bacterial adaptive immunity.");
     // reset the isDrawAdaptation value to be false so the timer doesn't constantly create new shapes
     this.isDrawAdaptation = false;
   }
@@ -162,7 +182,11 @@ public class CrisprCasType2ASwingView extends JFrame implements ICrisprCasView {
         utilTimer.cancel();
       }
     }, 2000);
-
+    // setting a text description for biogenesis
+    this.textArea.setText("At this stage, the CRISPR array is processed to produce mature CRISPR "
+        + "RNAs (crRNAs) that consists of a palindromic repeat (the blue strands) and the acquired "
+        + "viral DNA (the green and red strands). These crRNAs would go around in the cell to find "
+        + "any potential viruses that might have infected the bacteria.");
     // reset the isDrawBiogenesis value to be false so the timer doesn't constantly create new shapes
     this.isDrawBiogenesis = false;
   }
@@ -217,6 +241,11 @@ public class CrisprCasType2ASwingView extends JFrame implements ICrisprCasView {
         virus5.setYLimit(-100);
       }
     }, 5500);
+    // setting a text description for interference
+    this.textArea.setText("This stage is when the mature crRNAs do find a viral DNA. Once they "
+        + "find a matching virus DNA, they will send chemical signals telling the bacteria to "
+        + "help destroy the virus. Think of this last step as how our immune system fights off "
+        + "disease. It's basically the same thing!");
     // reset the isDrawInterference value to be false so the timer doesn't constantly create new shapes
     this.isDrawInterference = false;
   }
@@ -234,6 +263,13 @@ public class CrisprCasType2ASwingView extends JFrame implements ICrisprCasView {
   @Override
   public void setDrawInterference(boolean bool) {
     this.isDrawInterference = bool;
+  }
+
+  @Override
+  public void setListener(ActionListener listener) {
+    this.adaptButton.addActionListener(listener);
+    this.genButton.addActionListener(listener);
+    this.interButton.addActionListener(listener);
   }
 
   /**
