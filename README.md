@@ -5,4 +5,5 @@ The motivation for the MVC design is because I believe the adaptive immunity mec
 
 Lastly, the actual coding of the simulation is simplified for various reasons. Firstly, for the sake of teaching students about this biological concept, the focus should be on maximizing the presentation of the simulation rather than how the simulation is made. Secondly, scientists don't know yet how the CRISPR-Cas system fully functions mechanically to completely mimic the biological process, thus I cannot develop a thorough algorithm even if I wanted to. The end goal is to facilitate an efficient learning experience regarding bacterial CRISPR-Cas adaptive immunity, so the code can always be improved as I learn more about the interdisciplinary field of computer science and biology.
 
+# How to run the program
 The program can be run by downloading the project files and running the .jar file located in /out/artifacts/CRISPR_Cas9_Simulation_jar/CRISPR-Cas9 Simulation.jar
