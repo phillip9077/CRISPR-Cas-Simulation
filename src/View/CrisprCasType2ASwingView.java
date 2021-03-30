@@ -183,10 +183,11 @@ public class CrisprCasType2ASwingView extends JFrame implements ICrisprCasView {
       }
     }, 2000);
     // setting a text description for biogenesis
-    this.textArea.setText("At this stage, the CRISPR array is processed to produce mature CRISPR "
+    this.textArea.setText("At this stage, the CRISPR array is transcribed to produce mature CRISPR "
         + "RNAs (crRNAs) that consists of a palindromic repeat (the blue strands) and the acquired "
         + "viral DNA (the green and red strands). These crRNAs would go around in the cell to find "
-        + "any potential viruses that might have infected the bacteria.");
+        + "any potential viruses that might have infected the bacteria. Note that in reality, the "
+        + "CRISPR array doesn't break apart like this.");
     // reset the isDrawBiogenesis value to be false so the timer doesn't constantly create new shapes
     this.isDrawBiogenesis = false;
   }
